@@ -1,0 +1,194 @@
+@import "./variables.css";
+
+body {
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+body,
+button {
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+
+  @media desktop {
+    font-size: 18px;
+  }
+}
+
+.container {
+  max-width: 992px;
+  margin: 0 auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+h1,
+h3 {
+  z-index: 1;
+
+  @media tablet {
+    position: relative;
+    display: inline-block;
+    background: var(--colour-grey);
+    color: #fff;
+    padding: calc(var(--gutter) / 2) var(--gutter);
+
+    &:before,
+    &:after {
+      background: var(--colour-grey);
+      transform: skew(-30deg);
+      width: 100px;
+      position: absolute;
+      top: 0;
+      left: calc(var(--gutter) * -1.5);
+      height: 100%;
+      z-index: -1;
+    }
+
+    &:after {
+      content: " ";
+      left: auto;
+      right: calc(var(--gutter) * -1);
+    }
+  }
+
+  @media wide {
+    padding: calc(var(--gutter * 2)) var(--gutter) calc(var(--gutter) / 2) 0;
+
+    &:before {
+      content: " ";
+    }
+  }
+}
+
+.main {
+  flex-grow: 1;
+  margin-bottom: 2rem;
+
+  ul,
+  ol,
+  p {
+    line-height: 2;
+
+    a {
+      background-color: rgba(var(--colour-red-rgb), 0.1);
+      color: #000;
+      padding: 4px;
+    }
+  }
+}
+
+.news {
+  background-image: linear-gradient(
+    to bottom right,
+    rgba(var(--colour-red-rgb), 0.6),
+    #fff
+  );
+  padding-top: var(--vertical-spacing);
+  margin: calc(var(--vertical-spacing) * 2) 0 calc(var(--vertical-spacing) * -1)
+    0;
+  color: #fff;
+
+  h2 {
+    text-transform: uppercase;
+  }
+
+  @media tablet {
+    padding-bottom: var(--vertical-spacing);
+
+    h2 {
+      font-size: 2.5rem;
+    }
+  }
+}
+
+blockquote {
+  margin-left: 0;
+  padding-left: var(--gutter);
+  border-left: var(--gutter) solid #999;
+  font-style: italic;
+}
+
+iframe,
+img {
+  width: 100%;
+}
+
+figure {
+  margin: 0;
+}
+
+label {
+  position: relative;
+  display: inline-block;
+  padding: 0 0 0 2em;
+  height: 22px;
+  cursor: pointer;
+}
+
+label::before,
+label::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+
+input[type="checkbox"] + label::before,
+input[type="radio"] + label::before {
+  content: " ";
+  border: 2px solid #fff;
+  border-radius: 2px;
+}
+
+input[type="checkbox"] + label::after,
+input[type="radio"] + label::after {
+  content: " ";
+  background: #fff;
+  content: " ";
+  top: 5px;
+  left: 5px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #fff;
+  border-radius: 2px;
+}
+
+input[type="checkbox"] + label::after,
+input[type="radio"] + label::after {
+  transform: scale(0);
+}
+
+input[type="checkbox"]:checked + label::after,
+input[type="radio"]:checked + label::after {
+  transform: scale(1);
+}
+
+label::before,
+label::after {
+  transition: 0.25s all ease;
+}
+
+.sr-only {
+  border: 0 !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  clip-path: inset(50%) !important;
+  height: 1px !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  position: absolute !important;
+  width: 1px !important;
+  white-space: nowrap !important;
+}

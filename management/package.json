@@ -1,0 +1,17 @@
+{
+  "name": "contentstack-management",
+  "version": "1.0.0",
+  "description": "Example scripts to manage content.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "addteams": "bun --env-file=.env src/addteams.ts",
+    "addfixtures": "bun --env-file=.env src/addfixtures.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@contentstack/management": "^1.17.0",
+    "@types/node": "^22.3.0"
+  }
+}

@@ -1,0 +1,244 @@
+---
+import { getAllFixtures, formatDate } from "@lib/utils";
+import type { Fixture } from "@lib/type/fixture";
+
+const fixtures = await getAllFixtures();
+
+interface FixtureList {
+  [key: string]: Fixture[];
+}
+
+const fixtureList = Object.entries(
+  fixtures.reduce((prev: FixtureList, fixture: Fixture) => {
+    if (!prev[fixture.date]) {
+      prev[fixture.date] = [];
+    }
+
+    prev[fixture.date].push(fixture);
+
+    return prev;
+  }, {}),
+).sort((a, b) => a[0].localeCompare(b[0]));
+---
+
+<div class="fixture-list">
+  <ul class="fixture-list__fixtures">
+    {
+      fixtureList?.map((fixtureDate) => (
+        <li class="fixture-list__fixture-date">
+          <time class="fixture-list__date">{formatDate(fixtureDate[0])}</time>
+          {fixtureDate[1].map((fixture) => (
+            <div
+              class="fixture-list__fixture show"
+              data-ids={`${fixture.home_team[0].code},${fixture.away_team[0].code}`}
+            >
+              <div class="fixture-list__team">
+                {fixture.home_team[0].title}
+                <div class="fixture-list__badge" />
+                <div class="fixture-list__score">
+                  <strong>
+                    {fixture.home_score !== null ? fixture.home_score : "-"}
+                  </strong>
+                </div>
+                <div
+                  class={`fixture-list__competition fixture-list__competition-league`}
+                >
+                  <span class="sr-only">League</span>
+                </div>
+              </div>
+              <div class="fixture-list__team">
+                {fixture.away_team[0].title}
+                <div class="fixture-list__badge" />
+                <div class="fixture-list__score">
+                  <strong>
+                    {fixture.away_score !== null ? fixture.away_score : "-"}
+                  </strong>
+                </div>
+              </div>
+            </div>
+          ))}
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  .fixture-list {
+    &__filter {
+      background: #333;
+      border: 0;
+      color: #fff;
+      padding: 10px;
+      margin-bottom: $vertical-spacing;
+
+      @media tablet {
+        padding: 20px;
+      }
+
+      &-legend {
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+        width: 100%;
+        margin-bottom: 10px;
+
+        @media tablet {
+          width: auto;
+          margin-bottom: 0;
+        }
+      }
+
+      &-item {
+        padding: 5px 0;
+        display: block;
+
+        @media tablet {
+          padding: 10px;
+          display: inline;
+        }
+      }
+    }
+
+    &__fixtures {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    &__fixture-date {
+      margin-bottom: 2px;
+      position: relative;
+      display: none;
+
+      &:has(.show) {
+        display: block;
+      }
+    }
+
+    &__fixture {
+      padding: 5px 10px;
+      display: none;
+
+      &:nth-child(even) {
+        background: rgba(var(--colour-red-rgb), 0.25);
+      }
+
+      &:nth-child(odd) {
+        background: rgba(var(--colour-blue-rgb), 0.25);
+      }
+
+      &.show {
+        display: block;
+      }
+
+      @media tablet {
+        padding: 5px var(--gutter);
+
+        &.show {
+          display: flex;
+        }
+      }
+    }
+
+    &__team {
+      text-transform: uppercase;
+      font-weight: bold;
+      display: flex;
+      flex: 1 1 0;
+      align-items: center;
+      justify-content: space-between;
+      margin: 1px 0;
+
+      @media tablet {
+        justify-content: flex-end;
+        margin: 0;
+
+        &:last-child {
+          flex-direction: row-reverse;
+        }
+      }
+    }
+
+    &__date {
+      display: block;
+      font-size: 0.8rem;
+      text-align: center;
+      margin: 10px 0 4px 0;
+
+      &:has(+ &__date) {
+        display: none;
+      }
+    }
+
+    &__score {
+      font-size: 20px;
+      font-weight: bold;
+      padding: 5px 10px;
+      color: #fff;
+      margin: 5px 0 2px 0;
+      background: var(--colour-red);
+
+      @media tablet {
+        padding: 10px 25px;
+        transform: skew(-30deg);
+        margin: 0 2px;
+      }
+
+      strong {
+        display: inline-block;
+        width: 20px;
+        text-align: center;
+
+        @media tablet {
+          transform: skew(30deg);
+          font-size: 1.5rem;
+          line-height: 1;
+        }
+      }
+    }
+
+    &__badge {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #ccc;
+      background: #eee;
+      border-radius: 30px;
+      margin: 10px 20px;
+      display: none;
+
+      @media tablet {
+        display: inline-block;
+      }
+    }
+
+    &__competition {
+      position: absolute;
+      right: 60px;
+
+      @media tablet {
+        right: var(--gutter);
+      }
+
+      &:after {
+        display: block;
+      }
+
+      &-cup:after {
+        content: "\1F3C6";
+      }
+
+      &-league:after {
+        content: "\1F3C5";
+      }
+
+      &-friendly:after {
+        content: "\1F91D";
+      }
+    }
+  }
+
+  :global(.badge-image__img) {
+    border-radius: 15px;
+  }
+</style>

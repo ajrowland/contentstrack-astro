@@ -1,0 +1,292 @@
+---
+import "../assets/style/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  author?: string;
+  image?: any;
+}
+
+const { title, description, author } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="author" content={author || "OBPSFA"} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:site" content="odpsfa" />
+    <meta name="twitter:creator" content="odpsfa" />
+
+    <meta name="og:type" content="article" />
+    <meta name="og:title" content={title} />
+    <meta name="og:description" content={description} />
+    <meta name="og:url" content={Astro.url} />
+
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="layout">
+      <main class="main">
+        <div class="container">
+          <slot />
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
+<style>
+  .menu-active {
+    main,
+    footer {
+      display: none;
+
+      @media desktop {
+        display: block;
+      }
+    }
+  }
+
+  .layout {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header {
+    background: #fff;
+    border-bottom: 2px solid rgba(var(--colour-grey-rgb), 0.4);
+    z-index: 2;
+    position: sticky;
+    top: 0;
+    margin-bottom: 10px;
+
+    .menu-active & {
+      border-bottom-width: 0;
+    }
+
+    @media desktop {
+      position: static;
+      margin: var(--vertical-spacing) 0;
+      height: auto;
+      border-bottom-width: 2px !important;
+      background: rgba(var(--colour-blue-rgb), 0.7);
+    }
+
+    .header__nav {
+      @media desktop {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    &__top {
+      &-bar {
+        background-color: var(--colour-red);
+        color: #fff;
+        text-align: right;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+
+      &-links {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      &-link {
+        display: flex;
+        align-items: center;
+        color: #fff;
+        text-decoration: none;
+        padding: 5px;
+        font-size: 0.8rem;
+
+        @media desktop {
+          font-size: 1rem;
+          padding: 10px;
+
+          &:hover {
+            background: rgba(var(--colour-grey-rgb), 0.3);
+          }
+        }
+
+        svg {
+          display: inline-block;
+          width: 32px;
+          height: 32px;
+          fill: #fff;
+        }
+      }
+    }
+
+    &__bottom-bar {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(var(--colour-blue-rgb), 0.7);
+      margin: 0 calc(var(--gutter) * -1);
+      padding: 0 var(--gutter);
+
+      @media desktop {
+        background: none;
+      }
+    }
+
+    &__logo {
+      display: block;
+      background-image: var(--logoWebp);
+      background-color: #fff;
+      background-repeat: no-repeat;
+      width: 100px;
+      height: 100px;
+      background-size: cover;
+      text-indent: -9999px;
+      border: 5px solid #fff;
+      border-radius: 110px;
+      margin: calc(var(--vertical-spacing) * -1) 0
+        calc(var(--vertical-spacing) * -0.5) 0;
+      z-index: 2;
+
+      @media tablet {
+        width: 150px;
+        height: 150px;
+        border-radius: 78px;
+        border-width: 6px;
+      }
+
+      @media desktop {
+        width: 204px;
+        height: 204px;
+        border-radius: 120px;
+        border-width: 8px;
+        margin: calc(var(--vertical-spacing) * -2.5) 0
+          calc(var(--vertical-spacing) * -1) calc(var(--gutter) * -1);
+      }
+    }
+
+    &__menu-toggle {
+      right: 10px;
+      text-transform: uppercase;
+      background: var(--colour-blue);
+      border: none;
+      font-weight: bold;
+      padding: 10px;
+      font-size: 1rem;
+      color: var(--colour-grey);
+
+      &:after {
+        content: "\2630";
+        width: 20px;
+        display: inline-block;
+        text-align: right;
+      }
+
+      .menu-active &:after {
+        content: "\2715";
+      }
+
+      @media desktop {
+        display: none;
+      }
+    }
+
+    &__nav-links {
+      text-align: right;
+      display: none;
+      background: #fff;
+      margin: 0 calc(var(--gutter) * -1);
+      padding: var(--gutter);
+      border-top: 2px solid rgba(var(--colour-grey-rgb), 0.4);
+
+      .menu-active & {
+        display: block;
+      }
+
+      @media desktop {
+        display: block;
+        background: transparent;
+        border: 0;
+      }
+    }
+
+    &__nav-link {
+      padding: 10px 0;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--colour-grey);
+      font-weight: bold;
+      border-bottom: 2px solid transparent;
+      display: block;
+      transition: border-color 0.2s ease-in-out;
+
+      &.active,
+      &:hover {
+        border-color: var(--colour-grey);
+      }
+
+      @media desktop {
+        padding: 5px 0;
+        margin: 10px;
+        display: inline;
+      }
+    }
+  }
+
+  .footer {
+    background: var(--colour-grey);
+    color: #fff;
+    padding: var(--vertical-spacing) 0;
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+
+      @media desktop {
+        flex-direction: row;
+      }
+    }
+
+    li {
+      padding: 0 0 20px 0;
+
+      @media desktop {
+        padding: 0 20px 0 0;
+      }
+    }
+
+    a {
+      color: #fff;
+    }
+
+    @media desktop {
+      padding: calc(var(--vertical-spacing) * 2) 0;
+    }
+  }
+</style>
+<script>
+  document.querySelectorAll("[data-menu-close]")?.forEach((el) =>
+    el.addEventListener("click", () => {
+      document.body.classList.remove("menu-active");
+    }),
+  );
+
+  document
+    .querySelector("[data-menu-toggle]")
+    ?.addEventListener("click", () => {
+      document.body.classList.toggle("menu-active");
+    });
+</script>
