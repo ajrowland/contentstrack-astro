@@ -9,8 +9,8 @@ const season = "2020-21";
 const division = "1";
 const country = "en";
 const competitionName = "Premier League";
-const competitionId = "blt8ff82f65bbb9aeb8";
-const seasonId = "blt2e173bfc57f061cc";
+// const competitionId = "blt8ff82f65bbb9aeb8";
+// const seasonId = "blt2e173bfc57f061cc";
 
 const resFixtures = await fetch(
   `https://raw.githubusercontent.com/openfootball/football.json/master/${season}/${country}.${division}.json`
@@ -62,10 +62,12 @@ export const addFixtures = async () => {
         entry: {
           title: `${match.date} (${competitionName}) - ${match.team1} v ${match.team2}`,
           date: match.date,
+          /*
           competition: [
             { uid: competitionId, _content_type_uid: "competition" },
           ],
           season: [{ uid: seasonId, _content_type_uid: "season" }],
+          */
           home_team: [
             { uid: teamLookup[match.team1], _content_type_uid: "team" },
           ],
