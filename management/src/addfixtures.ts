@@ -51,8 +51,6 @@ export const addFixtures = async () => {
     {}
   );
 
-  console.log(dataFixtures.matches.slice(2, 3));
-
   dataFixtures.matches.forEach(async (match) => {
     console.log(match);
 

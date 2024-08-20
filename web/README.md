@@ -6,6 +6,17 @@ An example site to list football (Soccer!) entries from Contentstack.
 
 The content can be generated via the code in the /management directory.
 
+You will need an `.env` file:
+
+```
+CONTENTSTACK_API_KEY=stack_api_key
+CONTENTSTACK_DELIVERY_TOKEN=delivery_token
+CONTENTSTACK_ENVIRONMENT=development_etc
+CONTENTSTACK_BRANCH=main_etc
+CONTENTSTACK_REGION=eu
+CONTENTSTACK_API_HOST=eu-api.contentstack.com
+```
+
 ## 🧞 Commands
 
 All commands are run from the root of the project, from a terminal:
