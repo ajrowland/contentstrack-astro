@@ -19,9 +19,36 @@ const fixtureList = Object.entries(
     return prev;
   }, {}),
 ).sort((a, b) => a[0].localeCompare(b[0]));
+
+const teamFilter = Object.entries(
+  fixtures.reduce<{ [key: string]: string }>((lookup, fixture) => {
+    lookup[fixture.home_team[0].title] = fixture.home_team[0].code;
+
+    return lookup;
+  }, {}),
+).sort((a, b) => a[0].localeCompare(b[0]));
 ---
 
 <div class="fixture-list">
+  <fieldset class="fixture-list__filter">
+    <legend class="fixture-list__filter-legend">Filter fixtures</legend>
+    {
+      teamFilter?.map((filter) => (
+        <div class="fixture-list__filter-item">
+          <span class="fixture-list__filter-item">
+            <input
+              data-filter
+              type="checkbox"
+              id={filter[1]}
+              value={filter[1]}
+              disabled={teamFilter.length === 1}
+            />
+            <label for={filter[1]}>{filter[0]}</label>
+          </span>
+        </div>
+      ))
+    }
+  </fieldset>
   <ul class="fixture-list__fixtures">
     {
       fixtureList?.map((fixtureDate) => (
@@ -30,7 +57,8 @@ const fixtureList = Object.entries(
           {fixtureDate[1].map((fixture) => (
             <div
               class="fixture-list__fixture show"
-              data-ids={`${fixture.home_team[0].code},${fixture.away_team[0].code}`}
+              data-home-id={fixture.home_team[0].code}
+              data-away-id={fixture.away_team[0].code}
             >
               <div class="fixture-list__team">
                 {fixture.home_team[0].title}
@@ -63,16 +91,51 @@ const fixtureList = Object.entries(
   </ul>
 </div>
 
+<script>
+  const filterEls: HTMLInputElement[] = Array.from(
+    document.querySelectorAll("[data-filter]"),
+  );
+
+  const fixtureEls: HTMLElement[] = Array.from(
+    document.querySelectorAll("[data-home-id]"),
+  );
+
+  filterEls.forEach((filterEl) => {
+    filterEl.addEventListener("change", () => {
+      const selectedIds = filterEls.filter((el) => el.checked).map((f) => f.id);
+
+      fixtureEls.forEach((fixtureEl) => {
+        if (selectedIds.length === 0) {
+          fixtureEl.classList.add("show");
+        } else {
+          if (
+            selectedIds.includes(fixtureEl.dataset["homeId"] || "") ||
+            selectedIds.includes(fixtureEl.dataset["awayId"] || "")
+          ) {
+            fixtureEl.classList.add("show");
+          } else {
+            fixtureEl.classList.remove("show");
+          }
+        }
+      });
+    });
+  });
+</script>
+
 <style>
   .fixture-list {
     &__filter {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
       background: #333;
       border: 0;
       color: #fff;
       padding: 10px;
-      margin-bottom: $vertical-spacing;
+      margin-bottom: var(--vertical-spacing);
 
       @media tablet {
+        flex-direction: row;
         padding: 20px;
       }
 
@@ -81,10 +144,9 @@ const fixtureList = Object.entries(
         font-weight: bold;
         text-transform: uppercase;
         width: 100%;
-        margin-bottom: 10px;
+        padding-bottom: 10px;
 
         @media tablet {
-          width: auto;
           margin-bottom: 0;
         }
       }
@@ -94,7 +156,7 @@ const fixtureList = Object.entries(
         display: block;
 
         @media tablet {
-          padding: 10px;
+          padding: 10px 10px 10px 0;
           display: inline;
         }
       }

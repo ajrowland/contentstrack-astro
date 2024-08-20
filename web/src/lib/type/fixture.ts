@@ -1,5 +1,5 @@
 export type Fixture = {
-  title: Array<{ title: string }>;
+  title: string;
   date: string;
   season: Array<{ title: string }>;
   home_team: Array<{ title: string; code: string }>;
