@@ -15,7 +15,7 @@ USER_PASSWORD=login_passowrd
 
 ## 🧞 Commands
 
-All commands are run from the root of the project, from a terminal:
+All commands are run from the root of the project, from a terminal. You will need to run add teams, before fixtures:
 
 | Command               | Action                                |
 | :-------------------- | :------------------------------------ |
